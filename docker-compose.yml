@@ -1,0 +1,20 @@
+services:
+  web:
+    build:
+      dockerfile: ./Dockerfile
+    command:
+      - sh
+      - -c
+      - "python manage.py migrate --noinput && gunicorn stripe_payments.wsgi:application --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "200k"
+    volumes:
+      - ./stripe_payments/db.sqlite3:/app/db.sqlite3
