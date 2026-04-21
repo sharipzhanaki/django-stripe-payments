@@ -59,5 +59,6 @@ class Order(models.Model):
     def total_price(self) -> int:
         return self.subtotal - self.discount_amount + self.tax_amount
 
+    @property
     def total_price_display(self) -> str:
         return f'{self.total_price / 100:.2f}'
