@@ -12,4 +12,6 @@ COPY stripe_payments/ .
 
 RUN python manage.py collectstatic --noinput
 
-CMD sh -c "python manage.py migrate --noinput && gunicorn stripe_payments.wsgi:application --bind 0.0.0.0:${PORT:-8000}"
+CMD sh -c "python manage.py migrate --noinput && \
+           python manage.py createsuperuser --noinput || true && \
+           gunicorn stripe_payments.wsgi:application --bind 0.0.0.0:${PORT:-8000}"
